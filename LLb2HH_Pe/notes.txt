@@ -1,0 +1,27 @@
+Dla sytuacji gdy z palca ustawiam Pe = 0.
+Parameters aPsi=0.461 pPsi=0.740 Pe=0.000 aL=0.758 aLb=-0.758
+0.461 0.74 0.0
+s(aL)=  6.9+/-0.3  s(aLb)=  6.9+/-0.3  s(aPsi)=  3.44+/-0.02  s(pPsi)=  7.34+/-0.06  s(Pe)=  2.010+/-0.008
+
+Z palca ustawione Pe = 0.5 w angDist
+Parameters aPsi=0.461 pPsi=0.740 Pe=0.500 aL=0.758 aLb=-0.758
+0.461 0.74 0.5
+s(aL)=  2.86+/-0.02  s(aLb)=  2.89+/-0.04  s(aPsi)=  3.05+/-0.02  s(pPsi)=  5.38+/-0.04  s(Pe)=  2.26+/-0.02
+
+z palca ustawione Pe = 0.5 w main
+Parameters aPsi=0.461 pPsi=0.740 Pe=0.500 aL=0.758 aLb=-0.758
+0.461 0.74 0.5
+
+s(aL)=  6.8+/-0.2  s(aLb)=  6.8+/-0.3  s(aPsi)=  2.92+/-0.02  s(pPsi)=  5.25+/-0.04  s(Pe)=  2.12+/-0.01
+
+Po updacie Pe = 0 bezposrednio w main
+s(aL)=  7.0+/-0.3  s(aLb)=  7.0+/-0.3  s(aPsi)=  3.42+/-0.02  s(pPsi)=  7.45+/-0.06  s(Pe)=  2.014+/-0.008
+
+Jeśli nie precyzuje w main, 0 w AngDist
+s(aL)=  6.9+/-0.3  s(aLb)=  6.9+/-0.3  s(aPsi)=  3.42+/-0.02  s(pPsi)=  7.46+/-0.06  s(Pe)=  2.023+/-0.008
+
+Ustawione bezposrednio w main 0.5
+s(aL)=  2.89+/-0.02  s(aLb)=  3.09+/-0.04  s(aPsi)=  3.04+/-0.02  s(pPsi)=  5.37+/-0.04  s(Pe)=  2.27+/-0.02
+
+Ustawione bezposrednio w angDist 0.5
+s(aL)=  2.88+/-0.02  s(aLb)=  3.02+/-0.04  s(aPsi)=  3.03+/-0.02  s(pPsi)=  5.33+/-0.04  s(Pe)=  2.25+/-0.02
