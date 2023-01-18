@@ -72,7 +72,7 @@ correlation_gavL_gwL = C[0, 1]
 diagB = B.diagonal()
 diagBsqrt = unumpy.sqrt(diagB)
 
-di = np.diag_indices(6)     # diagonal indices of 5 dimensional matrix
+di = np.diag_indices(9)     # diagonal indices of 5 dimensional matrix
 C[di] =  diagBsqrt          # put sqrt values into the main diagonal
 
 print("standard deviations for the global parameters:")
@@ -81,7 +81,7 @@ print("s(aXL)= ", '{:.1u}'.format(C[0,0]),"s(aYL)= ", '{:.1u}'.format(C[1,1]),"s
         " s(aPsi)= ", '{:.1u}'.format(C[6,6])," s(pPsi)= ", '{:.1u}'.format(C[7,7]),
         " s(Pe)= ", '{:.1u}'.format(C[8,8]))
 
-        
+
 #print("correlations for the global parameters:")
 #print("gavL/gwL= ", '{:.1u}'.format(C[0,1]),"gavL/aLb= ", '{:.1u}'.format(C[0,2]),
 #      "gwL/aLb= ", '{:.1u}'.format(C[1,2]))

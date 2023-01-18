@@ -135,19 +135,19 @@ class PDF:
 
         start = time.time()
 
-        pdf = multi_dot([dL0_A[:,0], dC_A, dLb0_A[:,0]])
+        pdf = multi_dot([dL0_A, dC_A, dLb0_A])
 
         # ---------------------------------   Analytic derivatives calculation      
         
-        dapsi = multi_dot([dL0_A[:,0], dC_aP, dLb0_A[:,0]]) 
-        dppsi = multi_dot([dL0_A[:,0], dC_pP, dLb0_A[:,0]])
-        dpe = multi_dot([dL0_A[:,0], dC_Pe, dLb0_A[:,0]])
-        daxl = multi_dot([dL0_aX[:,0], dC_A, dLb0_A[:,0]])
-        dayl = multi_dot([dL0_aY[:,0], dC_A, dLb0_A[:,0]])
-        dazl = multi_dot([dL0_aZ[:,0], dC_A, dLb0_A[:,0]])
-        daxlb = multi_dot([dL0_A[:,0], dC_A, dLb0_aX[:,0]])
-        daylb = multi_dot([dL0_A[:,0], dC_A, dLb0_aY[:,0]])
-        dazlb = multi_dot([dL0_A[:,0], dC_A, dLb0_aZ[:,0]])
+        dapsi = multi_dot([dL0_A, dC_aP, dLb0_A]) 
+        dppsi = multi_dot([dL0_A, dC_pP, dLb0_A])
+        dpe = multi_dot([dL0_A, dC_Pe, dLb0_A])
+        daxl = multi_dot([dL0_aX, dC_A, dLb0_A])
+        dayl = multi_dot([dL0_aY, dC_A, dLb0_A])
+        dazl = multi_dot([dL0_aZ, dC_A, dLb0_A])
+        daxlb = multi_dot([dL0_A, dC_A, dLb0_aX])
+        daylb = multi_dot([dL0_A, dC_A, dLb0_aY])
+        dazlb = multi_dot([dL0_A, dC_A, dLb0_aZ])
         
         end = time.time()
         self.exec_time_loop_pdf += end-start
