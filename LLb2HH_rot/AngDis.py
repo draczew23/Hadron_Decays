@@ -100,21 +100,17 @@ class PDF:
         deri_dC_Pe = dericalcprod.calc_derivatives(vars_CC, 2, h)
         
         # derivatives for DL0
-        # dericalc.get_kinematic(tp, pp, cp)
         deri_dL0_aX = dericalc.calc_derivatives(vars_DL0, 0, h)
         deri_dL0_aY = dericalc.calc_derivatives(vars_DL0, 1, h)
         deri_dL0_aZ = dericalc.calc_derivatives(vars_DL0, 2, h)
 
         # derivatives for DLb0
-        # dericalc.get_kinematic(tpb, ppb, cpb)
         deri_dLb0_aX = dericalc.calc_derivatives(vars_DLb0, 0, h)
         deri_dLb0_aY = dericalc.calc_derivatives(vars_DLb0, 1, h)
         deri_dLb0_aZ = dericalc.calc_derivatives(vars_DLb0, 2, h)
 
         mat_start = time.time()
         self.CC.get_kine_calc_trig(tL)
-        # self.DL0.get_kine_calc_trig(tp, pp, cp)
-        # self.DLb0.get_kine_calc_trig(tpb, ppb, cpb)
 
         # Rotation mattices
         rot_CC = RotationMatrix(theta=tL)
@@ -134,7 +130,7 @@ class PDF:
         dL0_A = self.DL0.create_matrix()
         dLb0_A = self.DLb0.create_matrix()
 
-        # Applu rotation
+        # Apply rotation
         dL0_A = np.dot(r_DL0, dL0_A)
         dLb0_A = np.dot(r_DLb0, dLb0_A)     
 
@@ -156,23 +152,21 @@ class PDF:
         pdf = 0
 
         start = time.time()
-
         pdf = multi_dot([dL0_A[:, 0], dC_A, dLb0_A[:, 0]])
 
         # ---------------------------------   Analytic derivatives calculation      
-        print(dL0_aX.shape, dC_A.shape, dLb0_A[:, 0].shape)
-        print(pdf.shape)
 
-        dapsi = multi_dot([dL0_A, dC_aP, dLb0_A]) 
-        dppsi = multi_dot([dL0_A, dC_pP, dLb0_A])
-        dpe = multi_dot([dL0_A, dC_Pe, dLb0_A])
-        daxl = multi_dot([dL0_aX, dC_A, dLb0_A[:, 0]])
-        dayl = multi_dot([dL0_aY, dC_A, dLb0_A[:, 0]])
-        dazl = multi_dot([dL0_aZ, dC_A, dLb0_A[:, 0]])
-        daxlb = multi_dot([dL0_A, dC_A, dLb0_aX[:, 0]])
-        daylb = multi_dot([dL0_A, dC_A, dLb0_aY[:, 0]])
-        dazlb = multi_dot([dL0_A, dC_A, dLb0_aZ[:, 0]])
-        
+        dapsi = multi_dot([dL0_A[:, 0], dC_aP, dLb0_A[:, 0]]) 
+        dppsi = multi_dot([dL0_A[:, 0], dC_pP, dLb0_A[:, 0]])
+        dpe = multi_dot([dL0_A[:, 0], dC_Pe, dLb0_A[:, 0]])
+
+        daxl = multi_dot([dL0_aX[:, 0], dC_A, dLb0_A[:, 0]])
+        dayl = multi_dot([dL0_aY[:, 0], dC_A, dLb0_A[:, 0]])
+        dazl = multi_dot([dL0_aZ[:, 0], dC_A, dLb0_A[:, 0]])
+        daxlb = multi_dot([dL0_A[:, 0], dC_A, dLb0_aX[:, 0]])
+        daylb = multi_dot([dL0_A[:, 0], dC_A, dLb0_aY[:, 0]])
+        dazlb = multi_dot([dL0_A[:, 0], dC_A, dLb0_aZ[:, 0]])
+
         end = time.time()
         self.exec_time_loop_pdf += end-start
 

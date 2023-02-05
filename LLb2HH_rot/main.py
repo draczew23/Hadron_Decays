@@ -27,8 +27,8 @@ integ = vegas.Integrator([[0, PI], [0, PI], [-PI, PI], [-PI, PI], [0, PI], [-PI,
 # # # Training
 class_time = time.time()
 
-training = integ(gg, nitn=10, neval=200)
-result = integ(gg, nitn=20, neval=100)
+training = integ(gg, nitn=10, neval=2000)
+result = integ(gg, nitn=20, neval=10000)
 
 add_row = result[-10:]
 result = result[:-10]
