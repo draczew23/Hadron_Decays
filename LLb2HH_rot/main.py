@@ -27,7 +27,7 @@ integ = vegas.Integrator([[0, PI], [0, PI], [-PI, PI], [-PI, PI], [0, PI], [-PI,
 # # # Training
 class_time = time.time()
 
-training = integ(gg, nitn=10, neval=20)
+training = integ(gg, nitn=10, neval=200)
 result = integ(gg, nitn=20, neval=100)
 
 add_row = result[-10:]
@@ -82,24 +82,24 @@ print("s(aXL)= ", '{:.1u}'.format(C[0,0]),"s(aYL)= ", '{:.1u}'.format(C[1,1]),"s
         " s(Pe)= ", '{:.1u}'.format(C[8,8]))
 
 
-#print("correlations for the global parameters:")
-#print("gavL/gwL= ", '{:.1u}'.format(C[0,1]),"gavL/aLb= ", '{:.1u}'.format(C[0,2]),
+# print("correlations for the global parameters:")
+# print("gavL/gwL= ", '{:.1u}'.format(C[0,1]),"gavL/aLb= ", '{:.1u}'.format(C[0,2]),
 #      "gwL/aLb= ", '{:.1u}'.format(C[1,2]))
 
 end = time.time()
 
 # Saving output result
-#scanned_parameter = float(pdf.gavL)
-#C_vals = [C[0,0], C[1,1], C[2,2], C[3,3], C[4,4], C[5,5]]
-#
-#with open('output/result_scanaLb_new.txt', 'a') as f:
+# scanned_parameter = float(pdf.gavL)
+C_vals = [C[0,0], C[1,1], C[2,2], C[3,3], C[4,4], C[5,5]]
+
+with open('output/result_scanaLb_new.txt', 'a') as f:
 #    f.write('{:.2f};'.format(scanned_parameter))
-#    for val in C_vals:
-#        f.write('{:.3f};'.format(val.nominal_value))
-#        f.write('{:.3f};'.format(val.std_dev))
-#
-#    f.write('\n')
-#f.close()    
+   for val in C_vals:
+       f.write('{:.3f};'.format(val.nominal_value))
+       f.write('{:.3f};'.format(val.std_dev))
+
+   f.write('\n')
+f.close()    
 #
 #vals = '{:.2f}, {:.1u}, {:.1u}, {:.1u}, {:.1u}, {:.1u}, {:.1u}'.format(float(pdf.aLb), C[0,0], C[1,1], C[2,2], C[3,3], C[4,4], C[5,5])
 #

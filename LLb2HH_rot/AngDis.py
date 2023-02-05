@@ -8,6 +8,8 @@ from AAProd12 import *
 from RotMat import *
 from derivative_calculator_prod import *
 from derivative_calculator_decay import *
+from RotationMatrix import *
+
 
 class PDF:
 # Default values of the global parameters:
@@ -98,35 +100,55 @@ class PDF:
         deri_dC_Pe = dericalcprod.calc_derivatives(vars_CC, 2, h)
         
         # derivatives for DL0
-        dericalc.get_kinematic(tp, pp, cp)
+        # dericalc.get_kinematic(tp, pp, cp)
         deri_dL0_aX = dericalc.calc_derivatives(vars_DL0, 0, h)
         deri_dL0_aY = dericalc.calc_derivatives(vars_DL0, 1, h)
         deri_dL0_aZ = dericalc.calc_derivatives(vars_DL0, 2, h)
 
         # derivatives for DLb0
-        dericalc.get_kinematic(tpb, ppb, cpb)
+        # dericalc.get_kinematic(tpb, ppb, cpb)
         deri_dLb0_aX = dericalc.calc_derivatives(vars_DLb0, 0, h)
         deri_dLb0_aY = dericalc.calc_derivatives(vars_DLb0, 1, h)
         deri_dLb0_aZ = dericalc.calc_derivatives(vars_DLb0, 2, h)
 
         mat_start = time.time()
         self.CC.get_kine_calc_trig(tL)
-        self.DL0.get_kine_calc_trig(tp, pp, cp)
-        self.DLb0.get_kine_calc_trig(tpb, ppb, cpb)
+        # self.DL0.get_kine_calc_trig(tp, pp, cp)
+        # self.DLb0.get_kine_calc_trig(tpb, ppb, cpb)
 
+        # Rotation mattices
+        rot_CC = RotationMatrix(theta=tL)
+        rot_CC.create()
+        r_CC = rot_CC.R
+
+        rot_DL0 = RotationMatrix(theta=tp, phi=pp, chi=cp)
+        rot_DL0.create()
+        r_DL0 = rot_DL0.R
+
+        rot_DLb0 = RotationMatrix(theta=tpb, phi=ppb, chi=cpb)
+        rot_DLb0.create()
+        r_DLb0 = rot_DLb0.R
+
+        # Matrices before rotation (we don't rotate dC_A matrix)
         dC_A = self.CC.create_matrix()
         dL0_A = self.DL0.create_matrix()
         dLb0_A = self.DLb0.create_matrix()
 
+        # Applu rotation
+        dL0_A = np.dot(r_DL0, dL0_A)
+        dLb0_A = np.dot(r_DLb0, dLb0_A)     
+
         dC_aP = deri_dC_aP
         dC_pP = deri_dC_pP
         dC_Pe = deri_dC_Pe
-        dL0_aX = deri_dL0_aX
-        dL0_aY = deri_dL0_aY
-        dL0_aZ = deri_dL0_aZ
-        dLb0_aX = deri_dLb0_aX
-        dLb0_aY = deri_dLb0_aY
-        dLb0_aZ = deri_dLb0_aZ
+
+        # Apply rotation to derivatives matrices
+        dL0_aX = np.dot(r_DL0, deri_dL0_aX)
+        dL0_aY = np.dot(r_DL0, deri_dL0_aY)
+        dL0_aZ = np.dot(r_DL0, deri_dL0_aZ)
+        dLb0_aX = np.dot(r_DLb0, deri_dLb0_aX)
+        dLb0_aY = np.dot(r_DLb0, deri_dLb0_aY)
+        dLb0_aZ = np.dot(r_DLb0, deri_dLb0_aZ)
 
         mat_end = time.time()
 
@@ -135,19 +157,21 @@ class PDF:
 
         start = time.time()
 
-        pdf = multi_dot([dL0_A, dC_A, dLb0_A])
+        pdf = multi_dot([dL0_A[:, 0], dC_A, dLb0_A[:, 0]])
 
         # ---------------------------------   Analytic derivatives calculation      
-        
+        print(dL0_aX.shape, dC_A.shape, dLb0_A[:, 0].shape)
+        print(pdf.shape)
+
         dapsi = multi_dot([dL0_A, dC_aP, dLb0_A]) 
         dppsi = multi_dot([dL0_A, dC_pP, dLb0_A])
         dpe = multi_dot([dL0_A, dC_Pe, dLb0_A])
-        daxl = multi_dot([dL0_aX, dC_A, dLb0_A])
-        dayl = multi_dot([dL0_aY, dC_A, dLb0_A])
-        dazl = multi_dot([dL0_aZ, dC_A, dLb0_A])
-        daxlb = multi_dot([dL0_A, dC_A, dLb0_aX])
-        daylb = multi_dot([dL0_A, dC_A, dLb0_aY])
-        dazlb = multi_dot([dL0_A, dC_A, dLb0_aZ])
+        daxl = multi_dot([dL0_aX, dC_A, dLb0_A[:, 0]])
+        dayl = multi_dot([dL0_aY, dC_A, dLb0_A[:, 0]])
+        dazl = multi_dot([dL0_aZ, dC_A, dLb0_A[:, 0]])
+        daxlb = multi_dot([dL0_A, dC_A, dLb0_aX[:, 0]])
+        daylb = multi_dot([dL0_A, dC_A, dLb0_aY[:, 0]])
+        dazlb = multi_dot([dL0_A, dC_A, dLb0_aZ[:, 0]])
         
         end = time.time()
         self.exec_time_loop_pdf += end-start
@@ -181,7 +205,6 @@ class PDF:
 
         dvec = self.dvec  # the vector of derivatives
         inv_pdf = 1/dvec[0]  # inverse of the PDF function
-
 
         jac = sin(tL)*sin(tp)*sin(tpb)  # Jacobian
         additional_row = np.asarray(dvec)*jac
