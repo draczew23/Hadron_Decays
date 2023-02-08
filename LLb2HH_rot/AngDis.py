@@ -79,6 +79,13 @@ class PDF:
         aXLb = self.aXLb
         aYLb = self.aYLb
         aZLb = self.aZLb
+
+        # # Little change
+        # d = self.DL0.gen_2_other_based_on_1(var_name='az', var_value=0.3)
+        # self.DL0.aX = d[0]
+        # self.DL0.aY = d[1]
+        # self.DL0.aZ = d[2]
+        # #
         
         # step, needed in derivative_calculator
         h = 0.0001
