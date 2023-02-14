@@ -8,6 +8,7 @@ class AADecay12new:
         self.aZ = aZ
         self.A = np.zeros((4, 4))
         self.A[0, 0] = 1
+        self.change_flag = False
     
     def gen_2_other_based_on_1(self, var_name, var_value):
         """_This function generates 2 parameters based on the input parameter value in a way that
@@ -25,36 +26,48 @@ class AADecay12new:
             _numpy.ndarray_: one-dimensional vector of parameters [ax, ay, az]__
         """
 
-        match var_name:
-            case 'ax':
-                input_var = var_value
-                val = 1 - input_var** 2
-                other_var_gen_1 = np.random.uniform(0, val)
-                val2 = val - other_var_gen_1 ** 2
-                other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
-                
-                return np.array([input_var, other_var_gen_1, other_var_gen_2])
+        if self.change_flag is False:
 
-            case 'ay':
-                input_var = var_value
-                val = 1 - input_var** 2
-                other_var_gen_1 = np.random.uniform(0, val)
-                val2 = val - other_var_gen_1 ** 2
-                other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
-                
-                return np.array([other_var_gen_2, input_var, other_var_gen_1])
+            self.change_flag = True
 
-            case 'az':
-                input_var = var_value
-                val = 1 - input_var** 2
-                other_var_gen_1 = np.random.uniform(0, val)
-                val2 = val - other_var_gen_1 ** 2
-                other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
+            match var_name:
+                case 'ax':
+                    input_var = var_value
+                    val = 1 - input_var** 2
+                    other_var_gen_1 = np.random.uniform(0, val)
+                    val2 = val - other_var_gen_1 ** 2
+                    other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
+                    
+                    print("Input variable ax: {}, ay: {}, az: {}".format(input_var, other_var_gen_1, other_var_gen_2))
+                    return np.array([input_var, other_var_gen_1, other_var_gen_2])
+
+                case 'ay':
+                    input_var = var_value
+                    val = 1 - input_var** 2
+                    other_var_gen_1 = np.random.uniform(0, val)
+                    val2 = val - other_var_gen_1 ** 2
+                    other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
+                    
+                    print("ax: {}, Input variable ay: {}, az: {}".format(other_var_gen_2, input_var, other_var_gen_1))
+                    return np.array([other_var_gen_2, input_var, other_var_gen_1])
+
+                case 'az':
+                    input_var = var_value
+                    val = 1 - input_var** 2
+                    other_var_gen_1 = np.random.uniform(0, val)
+                    val2 = val - other_var_gen_1 ** 2
+                    other_var_gen_2 = np.sqrt(val - other_var_gen_1 ** 2)
+                    
+                    print("ax: {}, ay: {}, Input variable az: {}".format(other_var_gen_2, other_var_gen_1, input_var))
+                    return np.array([other_var_gen_2, other_var_gen_1, input_var])
                 
-                return np.array([other_var_gen_2, other_var_gen_1, input_var])
+                case _:
+                    print("Wrong variable name!")
             
-            case _:
-                print("Wrong variable name!")
+        else:
+            return np.array([self.aX, self.aY, self.aZ])
+
+
     
     def create_matrix(self):
         """_This functions creates a decay matrix. Martix elements
